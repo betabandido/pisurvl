@@ -1,0 +1,17 @@
+camera:
+  name: opencv
+  resolution: [640, 480]
+  fps: 30
+  warmup_time: 2.5
+
+motion:
+  delta_threshold: 18
+  min_area: 500
+  resize_width: 500
+
+notification:
+  min_distance: 60
+
+alive-notification:
+  trigger: interval
+  hours: 1
