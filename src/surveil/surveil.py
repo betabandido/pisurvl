@@ -1,3 +1,4 @@
+from abc import ABCMeta, abstractmethod
 import io
 from PIL import Image
 import queue
@@ -11,7 +12,25 @@ from surveil.event_notifier import EventNotifier
 from threading import Thread
 
 
-class SurveillanceManager(Thread):
+class SurveillanceManager(metaclass=ABCMeta):
+    @abstractmethod
+    def is_surveillance_enabled(self):
+        pass
+
+    @abstractmethod
+    def start_surveillance(self):
+        pass
+
+    @abstractmethod
+    def stop_surveillance(self):
+        pass
+
+    @abstractmethod
+    def queue_surveillance_request(self, request, callback):
+        pass
+
+
+class SurveillanceCamera(Thread):
     def __init__(self, camera_factory=create_camera):
         super().__init__()
         self.camera_factory = camera_factory

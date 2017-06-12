@@ -1,6 +1,9 @@
+from exceptions import UnknownCommandException
+
+
 class RequestProcessor:
-    def __init__(self, app, response_processor):
-        self._app = app
+    def __init__(self, surveillance_manager, response_processor):
+        self._surveillance_manager = surveillance_manager
         self._response_processor = response_processor
         self._command_handlers = {
             'peek':         self._process_peek,
@@ -14,26 +17,28 @@ class RequestProcessor:
 
         handler = self._command_handlers.get(request['cmd'], None)
         if handler is None:
-            # TODO: send a warning email?
-            print('Unknown command: {}'.format(request['cmd']))
-            return
+            raise UnknownCommandException('Unknown command: {}'.format(request['cmd']))
 
         handler(request)
 
     def _process_peek(self, request):
-        self._app.queue_surveillance_request(
+        self._surveillance_manager.queue_surveillance_request(
             request,
-            self._process_response)
+            self._process_response
+        )
 
     def _process_state_query(self, request):
-        self._process_response(request, {'enabled': self._app.is_surveillance_enabled()})
+        self._process_response(
+            request,
+            {'enabled': self._surveillance_manager.is_surveillance_enabled()}
+        )
 
     def _process_enable(self, request):
-        self._app.start_surveillance()
+        self._surveillance_manager.start_surveillance()
         self._process_state_query(request)
 
     def _process_disable(self, request):
-        self._app.stop_surveillance()
+        self._surveillance_manager.stop_surveillance()
         self._process_state_query(request)
 
     def _process_response(self, request, response):

@@ -47,6 +47,7 @@ setup(
         'mockito',
         'numpy',
         'oauth2client',
+        'parameterized',
         'Pillow',
         'pytest',
         'PyYAML'

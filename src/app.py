@@ -1,13 +1,14 @@
 import time
 
+from exceptions import UnknownCommandException
 from exectools.exectools import is_execution_terminated
 from messaging.command_listener import CommandListener
 from messaging.request_processor import RequestProcessor
 from messaging.response_processor import ResponseProcessor
-from surveil.surveil import SurveillanceManager
+from surveil.surveil import SurveillanceCamera, SurveillanceManager
 
 
-class Application:
+class Application(SurveillanceManager):
     # TODO: increase retry time
     REQUEST_FETCHING_RETRY_TIME = 1
 
@@ -26,7 +27,11 @@ class Application:
             if request is None:
                 time.sleep(self.REQUEST_FETCHING_RETRY_TIME)
                 continue
-            self._request_processor.process(request)
+
+            try:
+                self._request_processor.process(request)
+            except UnknownCommandException as e:
+                print('ERROR: {}'.format(e))
 
         print('Application is cleaning up')
         self.stop_surveillance()
@@ -37,7 +42,7 @@ class Application:
 
     def start_surveillance(self):
         if not self.is_surveillance_enabled():
-            self._surveillance_manager = SurveillanceManager()
+            self._surveillance_manager = SurveillanceCamera()
             self._surveillance_manager.start()
 
     def stop_surveillance(self):
