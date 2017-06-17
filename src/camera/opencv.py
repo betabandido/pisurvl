@@ -5,8 +5,6 @@ from camera.camera import Camera
 
 
 class OpenCVCamera(Camera):
-    WARM_UP_TIME = 2
-
     def __init__(self, settings):
         self.camera = cv2.VideoCapture(0)
         if not self.camera.isOpened():
@@ -15,6 +13,8 @@ class OpenCVCamera(Camera):
         self._set_resolution(
             settings['resolution'][0],
             settings['resolution'][1])
+
+        self._warmup_time = settings['warmup_time']
 
     def __enter__(self):
         return self
@@ -29,7 +29,7 @@ class OpenCVCamera(Camera):
         return frame
 
     def warm_up(self):
-        time.sleep(self.WARM_UP_TIME)
+        time.sleep(self._warmup_time)
 
     def _set_resolution(self, width, height):
         print('setting resolution to: {} x {}'.format(width, height))

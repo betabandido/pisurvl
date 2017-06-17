@@ -1,4 +1,4 @@
-from mockito import mock, when
+from mockito import mock, verify, when
 from parameterized import parameterized
 from unittest import TestCase
 
@@ -19,37 +19,41 @@ class TestRequestProcessor(TestCase):
         with self.assertRaises(UnknownCommandException):
             request_processor.process(self.create_request('unknown-cmd'))
 
-    # def test_that_it_starts_surveillance_when_requested(self):
-    #     when(self._surveillance_manager).start_surveillance()
-    #     when(self._surveillance_manager).is_surveillance_enabled() \
-    #         .thenReturn(True)
-    #
-    #     request = self.create_request('enable')
-    #
-    #     when(self._response_processor).process(
-    #         self.create_response(request, enabled=True))
-    #
-    #     request_processor = RequestProcessor(
-    #         self._surveillance_manager,
-    #         self._response_processor)
-    #
-    #     request_processor.process(request)
-    #
-    # def test_that_it_stops_surveillance_when_requested(self):
-    #     when(self._surveillance_manager).stop_surveillance()
-    #     when(self._surveillance_manager).is_surveillance_enabled() \
-    #         .thenReturn(False)
-    #
-    #     request = self.create_request('disable')
-    #
-    #     when(self._response_processor).process(
-    #         self.create_response(request, enabled=False))
-    #
-    #     request_processor = RequestProcessor(
-    #         self._surveillance_manager,
-    #         self._response_processor)
-    #
-    #     request_processor.process(request)
+    def test_that_it_starts_surveillance_when_requested(self):
+        when(self._surveillance_manager).start_surveillance()
+        when(self._surveillance_manager).is_surveillance_enabled() \
+            .thenReturn(True)
+
+        request = self.create_request('enable')
+
+        when(self._response_processor).process(
+            self.create_response(request, enabled=True))
+
+        request_processor = RequestProcessor(
+            self._surveillance_manager,
+            self._response_processor)
+
+        request_processor.process(request)
+
+        verify(self._surveillance_manager, times=1).start_surveillance()
+
+    def test_that_it_stops_surveillance_when_requested(self):
+        when(self._surveillance_manager).stop_surveillance()
+        when(self._surveillance_manager).is_surveillance_enabled() \
+            .thenReturn(False)
+
+        request = self.create_request('disable')
+
+        when(self._response_processor).process(
+            self.create_response(request, enabled=False))
+
+        request_processor = RequestProcessor(
+            self._surveillance_manager,
+            self._response_processor)
+
+        request_processor.process(request)
+
+        verify(self._surveillance_manager, times=1).stop_surveillance()
 
     @parameterized.expand([
         (False, False),

@@ -1,0 +1,22 @@
+camera:
+  name: opencv
+  resolution: [640, 480]
+  fps: 30
+  warmup_time: 2.5
+
+motion:
+  delta_threshold: 18
+  min_area: 500
+  resize_width: 500
+
+notifications:
+  from: <FROM EMAIL>
+  to:
+    - <TO EMAIL 1>
+    - <TO EMAIL 2>
+  motion:
+    min_distance: 60
+
+  alive:
+    trigger: interval
+    hours: 1

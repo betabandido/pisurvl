@@ -1,4 +1,3 @@
-from abc import ABCMeta, abstractmethod
 import io
 from PIL import Image
 import queue
@@ -12,25 +11,7 @@ from surveil.event_notifier import EventNotifier
 from threading import Thread
 
 
-class SurveillanceManager(metaclass=ABCMeta):
-    @abstractmethod
-    def is_surveillance_enabled(self):
-        pass
-
-    @abstractmethod
-    def start_surveillance(self):
-        pass
-
-    @abstractmethod
-    def stop_surveillance(self):
-        pass
-
-    @abstractmethod
-    def queue_surveillance_request(self, request, callback):
-        pass
-
-
-class SurveillanceCamera(Thread):
+class SurveillanceManager:
     def __init__(self, camera_factory=create_camera):
         super().__init__()
         self.camera_factory = camera_factory
@@ -39,8 +20,31 @@ class SurveillanceCamera(Thread):
         self.last_frame = None
 
         self.motion_detector = MotionDetector(settings['motion'])
-        self.event_notifier = EventNotifier(settings['notification'])
+        self.event_notifier = EventNotifier(settings['notifications'])
         self.backup_service = ImageBackupService()
+
+        self._thread = None
+
+    def is_surveillance_enabled(self):
+        return self._thread is not None
+
+    def start_surveillance(self):
+        if not self.is_surveillance_enabled():
+            self._thread = Thread(target=self.run)
+            self._thread.start()
+
+    def stop_surveillance(self):
+        if self.is_surveillance_enabled():
+            self.terminated = True
+            self._thread.join()
+            self._thread = None
+
+    def queue_surveillance_request(self, request, callback):
+        if self.is_surveillance_enabled():
+            self.request_queue.put_nowait(
+                {'request': request, 'callback': callback})
+        else:
+            print('WARNING: Surveillance request received while surveillance is disabled')
 
     def run(self):
         with self.camera_factory() as camera:
@@ -52,14 +56,6 @@ class SurveillanceCamera(Thread):
                     self._handle_motion_detection(self.last_frame)
                 self._process_requests()
                 time.sleep(1)
-
-    def stop(self):
-        self.terminated = True
-        self.join()
-
-    def queue_request(self, request, callback):
-        self.request_queue.put_nowait(
-            {'request': request, 'callback': callback})
 
     def _process_requests(self):
         if self.request_queue.empty():
