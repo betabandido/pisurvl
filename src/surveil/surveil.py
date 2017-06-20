@@ -13,7 +13,6 @@ from threading import Thread
 
 class SurveillanceManager:
     def __init__(self, camera_factory=create_camera):
-        super().__init__()
         self.camera_factory = camera_factory
         self.terminated = False
         self.request_queue = queue.Queue()

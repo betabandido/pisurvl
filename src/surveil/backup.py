@@ -1,7 +1,6 @@
-from datetime import datetime
-
 from google.credentials import get_credentials
 from google.drive import DriveManager, build_service
+from infrastructure.date_provider import DateProvider
 
 
 class ImageBackupService:
@@ -18,7 +17,7 @@ class ImageBackupService:
         Args:
           image: Image to upload.
         """
-        folder_name = datetime.now().strftime('D%d-%m-%yT%I%p')
+        folder_name = DateProvider.now().strftime('D%d-%m-%yT%I%p')
         folder_id = self._create_unique_folder(folder_name)
 
         filename = 'motion{0:04d}.jpg'.format(self.image_count)
