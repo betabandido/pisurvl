@@ -5,6 +5,10 @@ from exectools.exectools import is_execution_terminated
 from messaging.command_listener import CommandListener
 from messaging.request_processor import RequestProcessor
 from messaging.response_processor import ResponseProcessor
+from motion.detection import MotionDetector
+from settings import settings
+from surveil.backup import ImageBackupService
+from surveil.event_notifier import EventNotifier
 from surveil.surveil import SurveillanceManager
 
 
@@ -13,10 +17,17 @@ class Application:
     REQUEST_FETCHING_RETRY_TIME = 1
 
     def __init__(self):
-        self._surveillance_manager = SurveillanceManager()
+        self._surveillance_manager = SurveillanceManager(
+            MotionDetector(settings['motion']),
+            EventNotifier(settings['notifications']),
+            ImageBackupService()
+        )
         self._cmd_listener = CommandListener()
         self._response_processor = ResponseProcessor()
-        self._request_processor = RequestProcessor(self._surveillance_manager, self._response_processor)
+        self._request_processor = RequestProcessor(
+            self._surveillance_manager,
+            self._response_processor
+        )
 
     def start(self):
         print('Starting PiSurvl')
