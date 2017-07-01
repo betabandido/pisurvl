@@ -10,7 +10,7 @@ class TestMailSender(TestCase):
     A_SUBJECT = 'this is the subject'
     A_TEXT = 'this is the message text'
 
-    def test(self):
+    def test_that_a_message_is_created_correctly(self):
         message = MailSender.create_message(
             self.FROM_EMAIL,
             self.TO_EMAIL,

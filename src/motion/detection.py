@@ -32,7 +32,8 @@ class MotionDetector:
         threshold = cv2.dilate(threshold, None, iterations=2)
         self.inspector.dump(threshold, 'threshold')
         (_, contours, _) = cv2.findContours(threshold.copy(),
-                                            cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+                                            cv2.RETR_EXTERNAL,
+                                            cv2.CHAIN_APPROX_SIMPLE)
 
         motion_detected = False
 
