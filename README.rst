@@ -16,8 +16,8 @@ dependencies to build OpenCV 3:
 
 .. code:: bash
 
-   sudo apt install build-essential
-   sudo apt install cmake git libgtk2.0-dev pkg-config libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
+   sudo apt install build-essential cmake git pkg-config
+   sudo apt install libgtk2.0-dev libavcodec-dev libavformat-dev libswscale-dev libv4l-dev
    sudo apt install libjpeg-dev libpng-dev libtiff-dev libjasper-dev libdc1394-22-dev
    sudo apt install libatlas-base-dev gfortran liblapacke-dev
    sudo apt install python3 python3-dev python3-setuptools
