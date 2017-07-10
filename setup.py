@@ -9,7 +9,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='pisurvl',
     # Versions should comply with PEP440.
-    version='0.0.5',
+    version='0.0.6',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     entry_points={
@@ -38,7 +38,7 @@ setup(
     long_description=long_description,
     license='GPLv3',
     keywords='surveillance camera home-automation',
-    url='https://github.com/betabandido/pisurv',
+    url='https://github.com/betabandido/pisurvl',
     # See https://pypi.python.org/pypi?%3Aaction=list_classifiers
     classifiers=[
         'Development Status :: 3 - Alpha',
