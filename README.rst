@@ -45,6 +45,13 @@ The following commands download and compile OpenCV 3:
      ..
    make -j4
 
+Then install OpenCV:
+
+.. code:: bash
+
+   sudo make install
+
+
 
 Installing PiSurvl
 ------------------

@@ -17,6 +17,7 @@ setup(
             'pisurvl-server = pisurvl.main:main'
         ]
     },
+    # TODO: Does mockito (or pytest, ...) need to be a dependency for the installation?
     install_requires=[
         'google-api-python-client',
         'imutils',

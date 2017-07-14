@@ -81,4 +81,5 @@ class TestRequestProcessor(TestCase):
 
     @staticmethod
     def create_response(request, **kwargs):
-        return {**request, **kwargs}
+        request.update(kwargs)
+        return request

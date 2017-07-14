@@ -46,5 +46,5 @@ class RequestProcessor:
             'id': request['id'],
             'cmd': request['cmd']
         }
-        response = {**common_fields, **response}
+        response.update(common_fields)
         self._response_processor.process(response)
