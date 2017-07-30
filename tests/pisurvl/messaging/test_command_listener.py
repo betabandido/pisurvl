@@ -16,7 +16,7 @@ class TestCommandListener(TestCase):
 
         when(self._drive_manager).delete_file(ANY(str))
         when(self._drive_manager).download_file('id_new') \
-            .thenReturn(json.dumps(self.A_REQUEST))
+            .thenReturn(bytes(json.dumps(self.A_REQUEST), 'utf-8'))
 
         self._command_listener = CommandListener()
 

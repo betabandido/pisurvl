@@ -36,7 +36,7 @@ class CommandListener:
 
         data = drive_manager.download_file(files[0]['id'])
         drive_manager.delete_file(file_id)
-        return json.loads(data)
+        return json.loads(data.decode('utf-8'))
 
     @staticmethod
     def _drive_manager():
