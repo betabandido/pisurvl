@@ -9,12 +9,13 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='pisurvl',
     # Versions should comply with PEP440.
-    version='0.0.6',
+    version='0.0.8',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     entry_points={
         'console_scripts': [
-            'pisurvl-server = pisurvl.main:main'
+            'pisurvl-server = pisurvl.main:main',
+            'pisurvl-setup = pisurvl.google.credentials:create_credentials'
         ]
     },
     # TODO: Does mockito (or pytest, ...) need to be a dependency for the installation?

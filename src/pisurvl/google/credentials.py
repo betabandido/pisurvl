@@ -37,7 +37,8 @@ def get_credentials(flags=None):
 
     return credentials
 
-if __name__ == '__main__':
+
+def create_credentials():
     import argparse
     flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
     get_credentials(flags)
