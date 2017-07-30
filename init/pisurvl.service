@@ -1,0 +1,11 @@
+[Unit]
+Description=pisurv surveillance system
+After=network.target
+
+[Service]
+User=pi
+Group=pi
+ExecStart=/usr/local/bin/pisurvl-server
+
+[Install]
+WantedBy=multi-user.target

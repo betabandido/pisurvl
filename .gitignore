@@ -200,7 +200,6 @@ tags
 
 ### Custom ###
 
-mail_secrets.yaml
 client_secrets.json
 credentials.json
-
+settings.yaml
