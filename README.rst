@@ -52,15 +52,66 @@ Then install OpenCV:
    sudo make install
 
 
-
 Installing PiSurvl
 ------------------
 
 .. code:: bash
 
-   sudo pip3 install pisurvl
+   sudo pip3 install --upgrade pisurvl
    git clone https://github.com/betabandido/pisurvl.git
    sudo cp pisurvl/init/pisurvl.service /etc/systemd/system
    sudo systemctl enable pisurvl.service
 
+Configuring PiSurvl
+-------------------
+
+Create a settings file based on the provided template:
+
+.. code:: bash
+
+   mkdir -p ~/.pisurvl
+   cp pisurvl/template-settings.yaml ~/.pisurvl/settings.yaml
+
+Fill in the fields ``from`` and ``to`` in the ``notifications`` section.
+
+Use `Google API Manager`_ to generate some client credentials and download the ``client_secrets.json`` file. Then move
+the file into the PiSurvl configuration folder:
+
+.. code:: bash
+
+   mv client_secrets.json ~/.pisurvl
+
+Execute ``pisurvl-setup --noauth_local_webserver`` and follow the instructions on the screen to authorize PiSurvl to
+access Google Drive.
+
+Configuring Raspberry Pi
+------------------------
+
+Use ``raspi-config`` to enable the camera interface. Then, after rebooting, load the Video4Linux driver by running:
+
+.. code:: bash
+
+   sudo modprobe bcm2835-v4l2
+
+Add this module to ``/etc/modules`` to automatically load the module whenever the Raspberry Pi boots.
+
+Running PiSurvl
+---------------
+
+Use ``systemctl`` to start the service:
+
+.. code:: bash
+
+   sudo systemctl start pisurvl.service
+
+Development
+===========
+
+To upload a new release to PyPI follow the next steps:
+
+1) Bump version in ``setup.py``
+2) Run ``python3 setup.py sdist upload``
+
+
 .. _OpenCV: http://opencv.org
+.. _Google API Manager: https://console.developers.google.com
